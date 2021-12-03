@@ -1,0 +1,337 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "BucksAPI",
+    "version": "v0.0.1"
+  },
+  "paths": {
+    "/api/fi/v1/accounts": {
+      "get": {
+        "summary": "Obtener las cuentas de un usuario",
+        "tags": [
+          "Accounts"
+        ],
+        "parameters": [
+          {
+            "name": "user_uuid",
+            "in": "query",
+            "required": true,
+            "example": "6e37d2b2-edc9-4cac-acad-35cc7cc774a7",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Exitoso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "accounts": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "account_client_identifier": {
+                                "type": "string",
+                                "format": "uuid",
+                                "example": "d4911a27-2e7d-46fe-9dd6-720dca08d47d",
+                                "description": "Identificador de la cuenta para la entidad financiera"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Usuario no encontrado"
+          }
+        }
+      },
+      "post": {
+        "summary": "Dar de alta una cuenta",
+        "tags": [
+          "Accounts"
+        ],
+        "responses": {
+          "200": {
+            "description": "Exitoso"
+          },
+          "404": {
+            "description": "Usuario no encontrado"
+          },
+          "409": {
+            "description": "Usuario ya existente"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "account": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "example": "Caja de Ahorro 1234",
+                        "description": "Descripción de la cuenta"
+                      },
+                      "balance": {
+                        "type": "number",
+                        "example": 128,
+                        "description": "Balance de la cuenta"
+                      },
+                      "balance_at": {
+                        "type": "string",
+                        "example": "2021-11-30",
+                        "description": "Balance a la fecha"
+                      },
+                      "iso_currency_code": {
+                        "type": "string",
+                        "example": "PYG",
+                        "description": "Código de moneda en formato ISO"
+                      },
+                      "account_client_identifier": {
+                        "type": "string",
+                        "format": "uuid",
+                        "example": "d4911a27-2e7d-46fe-9dd6-720dca08d47d",
+                        "description": "Identificador de la cuenta para la entidad financiera"
+                      },
+                      "account_type": {
+                        "type": "string",
+                        "example": "Depósito",
+                        "description": "Tipo de cuenta"
+                      },
+                      "account_subtype": {
+                        "type": "string",
+                        "example": "Caja de ahorro a la vista",
+                        "description": "Sub-tipo de cuenta"
+                      }
+                    }
+                  },
+                  "user": {
+                    "type": "object",
+                    "properties": {
+                      "uuid": {
+                        "type": "string",
+                        "format": "uuid",
+                        "example": "a3b83306-4569-4331-a07c-5ad094c5f8ac",
+                        "description": "UUDI del usuario"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/fi/v1/transactions": {
+      "post": {
+        "summary": "Crear una transacción",
+        "tags": [
+          "Transactions"
+        ],
+        "responses": {
+          "200": {
+            "description": "Exitoso"
+          },
+          "406": {
+            "description": "No aceptado"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "transaction": {
+                    "type": "object",
+                    "properties": {
+                      "description": {
+                        "type": "string",
+                        "example": "Gollum, Salas y Rocha Asociados"
+                      },
+                      "transaction_client_identifier": {
+                        "type": "string",
+                        "example": "HR62712913051",
+                        "description": "Identificador único de transacción para la entidad financiera"
+                      },
+                      "authorization_code": {
+                        "type": "string",
+                        "example": "HR62712913050",
+                        "description": "Código de autorización de la transacción"
+                      },
+                      "amount": {
+                        "type": "number",
+                        "example": 158
+                      },
+                      "transaction_date": {
+                        "type": "string",
+                        "example": "2021-12-03"
+                      },
+                      "commerce": {
+                        "type": "string",
+                        "example": "Biggie"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/fi/v1/users": {
+      "post": {
+        "summary": "Dar de alta un usuario",
+        "tags": [
+          "User"
+        ],
+        "responses": {
+          "200": {
+            "description": "Exitoso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "user": {
+                      "type": "object",
+                      "properties": {
+                        "uuid": {
+                          "type": "string"
+                        },
+                        "user_client_identifier": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Usuario ya existente"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user": {
+                    "type": "object",
+                    "properties": {
+                      "user_client_identifier": {
+                        "type": "string",
+                        "example": "8f218ea2-ae8f-4a85-9eee-dfecadfe55fb",
+                        "description": "UUID del usuario"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/fi/v1/authenticate": {
+      "post": {
+        "summary": "Generar sesión para un usuario",
+        "tags": [
+          "User"
+        ],
+        "responses": {
+          "200": {
+            "description": "JWT generado"
+          },
+          "404": {
+            "description": "Usuario no encontrado"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user": {
+                    "type": "object",
+                    "properties": {
+                      "uuid": {
+                        "type": "string",
+                        "example": "5b7218cf-5a14-4040-b09a-4c11dec13a54",
+                        "description": "UUID del usuario"
+                      }
+                    }
+                  }
+                },
+                "required": [
+                  "user"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/fi/v1/users/{uuid}": {
+      "delete": {
+        "summary": "Dar de baja a un usuario",
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "description": "UUID del usuario",
+            "schema": {
+              "type": "string",
+              "properties": {
+                "uuid": {
+                  "type": "string",
+                  "description": "UUID of the user"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuario borrado"
+          },
+          "404": {
+            "description": "No encontrado"
+          }
+        }
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://sandbox.api.bucksapp.com"
+    }
+  ]
+}
